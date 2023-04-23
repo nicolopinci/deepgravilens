@@ -2,8 +2,6 @@
 
 This repository is the official implementation of [DeepGraviLens: a Multi-Modal Architecture for Classifying Gravitational Lensing Data](https://arxiv.org/abs/2205.00701). 
 
->📋  Optional: include a graphic explaining your approach/main result, bibtex entry, link to demos, blog posts and tutorials
-
 ## Requirements
 
 To install requirements:
@@ -12,49 +10,61 @@ To install requirements:
 pip install -r requirements.txt
 ```
 
->📋  Describe how to set up the environment, e.g. pip/conda/docker commands, download datasets, etc...
+## Data sets and pretrained models
+Both the data sets, containing simulated and real data, and the models described in the article, are available on Zenodo at [this link](https://zenodo.org/record/7854753) as zipped files. To use them:
+* Create a ```dataset``` folder in the main directory, and put the content of ```dataset.zip``` in there
+* Create a ```models``` folder in the main directory, and put the content of ```models.zip``` in there
+
 
 ## Training
 
-To train the model(s) in the paper, run this command:
+To train a model in the paper, run this command inside the ```networks``` folder:
 
 ```train
-python train.py --input-data <path_to_data> --alpha 10 --beta 20
+python run_training.py <dataset_name> <network_name> <is_informed>
 ```
 
->📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
+where:
+* ```dataset_name``` is the name of the data set (lsst_data for LSST-wide, des_deep_data for DES-deep, full_data for DES-wide, and high_cad_data for DESI-DOT)
+* ```network_name``` is the name of the (unimodal or multimodal network) to train. Available network names are: DeepCNN (i.e., the CNN network used for LoNet and MuNet), SmallImageFC (i.e., the FC network used for MuNet), ShallowGRU (i.e., the GRU network used for LoNet and MuNet), LoNet, EvidentialLoNet, GloNet, MuNet, EvidentialMuNet
+* ```is_informed``` must be ```informed``` when the mean and variance are considered, or ```noninformed``` otherwise
 
 ## Evaluation
 
-To evaluate my model on ImageNet, run:
+To evaluate the trained models on the simulated data sets, run this command inside the ```networks``` folder:
 
 ```eval
-python eval.py --model-file mymodel.pth --benchmark imagenet
+python overall_evaluation.py
 ```
 
->📋  Describe how to evaluate the trained models on benchmarks reported in the paper, give commands that produce the results (section below).
+Note that this script requires the presence of all the models implemented in the repository.
 
-## Pre-trained Models
+To evaluate the ensemble of LoNet, GloNet, and MuNet presented in the paper (with SVM) on the simulated data sets, run this command inside the ```networks``` folder:
+```eval
+python best_evaluation.py
+```
 
-You can download pretrained models here:
-
-- [My awesome model](https://drive.google.com/mymodel.pth) trained on ImageNet using parameters x,y,z. 
-
->📋  Give a link to where/how the pretrained models can be downloaded and how they were trained (if applicable).  Alternatively you can have an additional column in your results table with a link to the models.
+To evaluate the ensemble of LoNet, GloNet, and MuNet presented in the paper (with SVM) on the **real** data sets, run this command inside the ```networks``` folder:
+```eval
+python real_data_inference.py <OBS_ID>
+```
+where ```<OBS_ID>``` is the ID associated with the observation as presented in the paper.
 
 ## Results
 
-Our model achieves the following performance on :
+Our model achieves the following performance:
 
-### [Image Classification on ImageNet](https://paperswithcode.com/sota/image-classification-on-imagenet)
+|                                        | **DESI-DOT** | **DES-deep** | **DES-wide** | **LSST-wide** |
+|----------------------------------------|:---------------------:|:---------------------:|:---------------------:|:----------------------:|
+| DeepZipper                    |          77.1         |          58.6         |          51.7         |          74.3          |
+| DeepZipper II                 |          78.9         |          57.4         |          49.8         |          70.7          |
+| STNet                         |          85.1         |          58.4         |          82.5         |          84.3          |
+| EvidentialLoNet (Ours)       |          81.6         |          65.6         |          79.9         |          84.5          |
+| EvidentialMuNet (Ours)       |          81.1         |          65.6         |          79.4         |          84.2          |
+| LoNet (Ours)                 |          87.0         |          67.5         |          85.8         |          87.2          |
+| GloNet (Ours)                |          77.2         |          62.3         |          76.8         |          76.8          |
+| MuNet (Ours)                 |          87.9         |          67.9         |          86.5         |          88.5          |
+| DeepGraviLens (Ours) |        **88.7**       |        **69.6**       |        **87.7**       |        **88.8**        |
+| Improvement                   |          3.6          |          11.0         |          5.2          |           4.5          |
 
-| Model name         | Top 1 Accuracy  | Top 5 Accuracy |
-| ------------------ |---------------- | -------------- |
-| My awesome model   |     85%         |      95%       |
-
->📋  Include a table of results from your paper, and link back to the leaderboard for clarity and context. If your main result is a figure, include that figure and link to the command or notebook to reproduce it. 
-
-
-## Contributing
-
->📋  Pick a licence and describe how to contribute to your code repository. 
+Please refer to the paper for additional analyses.
