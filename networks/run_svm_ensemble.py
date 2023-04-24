@@ -10,7 +10,7 @@ from sklearn.svm import LinearSVC, SVC
 from sklearn.pipeline import make_pipeline
 from joblib import dump, load
 
-datasets = ["full_data", "lsst_data", "high_cad_data", "des_deep_data"]
+datasets = ["lsst_data", "full_data", "high_cad_data", "des_deep_data"]
 
 
 def compute_labels(network, dataloader, num_classes, device):
