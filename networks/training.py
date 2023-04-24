@@ -30,7 +30,7 @@ def compute_labels(network, dataloader, num_classes, device):
 def gpu_train_network(network, train_dataloader, train_dataset, validation_dataloader, validation_dataset, test_dataloader, test_dataset, monitor=False, outfile_prefix="", lr=None, batch_size = None):
     num_classes = 4
     es_patience = 20
-    number_of_training_epochs = 5
+    number_of_training_epochs = 500
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Device:", device)

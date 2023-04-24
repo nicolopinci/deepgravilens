@@ -59,8 +59,6 @@ for ds_name in datasets:
     image_side = 45
     device = "cuda"
     
-    informed = False
-
     lonet = networks.LoNet(in_channels, input_size, num_classes, ts_length, informed, ds_name)
     glonet = networks.GloNet(num_classes, ts_length, image_side, in_channels, informed, ds_name)
     munet = networks.MuNet(in_channels, num_classes, image_side, ts_length, informed, ds_name)

@@ -14,6 +14,7 @@ pip install -r requirements.txt
 Both the data sets, containing simulated and real data, and the models described in the article, are available on Zenodo at [this link](https://zenodo.org/record/7854753) as zipped files. To use them:
 * Create a ```dataset``` folder in the main directory, and put the content of ```dataset.zip``` in there
 * Create a ```models``` folder in the main directory, and put the content of ```models.zip``` in there
+* Create a ```results``` folder in the main directory, and create the subfolders ```lsst_data```, ```des_deep_data```, ```real_des_deep```, ```full_data```, and ```high_cad_data``` in there
 
 
 ## Training
@@ -28,6 +29,11 @@ where:
 * ```dataset_name``` is the name of the data set (lsst_data for LSST-wide, des_deep_data for DES-deep, full_data for DES-wide, and high_cad_data for DESI-DOT)
 * ```network_name``` is the name of the (unimodal or multimodal network) to train. Available network names are: DeepCNN (i.e., the CNN network used for LoNet and MuNet), SmallImageFC (i.e., the FC network used for MuNet), ShallowGRU (i.e., the GRU network used for LoNet and MuNet), LoNet, EvidentialLoNet, GloNet, MuNet, EvidentialMuNet
 * ```is_informed``` must be ```informed``` when the mean and variance are considered, or ```noninformed``` otherwise
+
+Use the following script to train all the networks sequentially:
+```train
+sh run_all_trainings.sh
+```
 
 ## Evaluation
 
