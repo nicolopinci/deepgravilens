@@ -19,6 +19,10 @@ def compute_labels(network, dataloader, num_classes, device):
     for batch, sample_batched in enumerate(dataloader):                            
         partial_output = network(sample_batched['lightcurve'].to(device),
                                sample_batched['image'].to(device))
+        
+        if len(partial_output) == 2:
+            partial_output = partial_output[0]
+            
         output = torch.cat((output, partial_output))
 
         partial_labels = sample_batched['label'].to(device)
@@ -61,7 +65,12 @@ def gpu_train_network(network, train_dataloader, train_dataset, validation_datal
         for i_batch, sample_batched in tqdm.tqdm(enumerate(train_dataloader), total=number_batches):
             network.train()
             optimizer.zero_grad()
+            
             output = network(sample_batched['lightcurve'].to(device), sample_batched['image'].to(device))
+            
+            if len(output) == 2: # evidential
+                output = output[0]
+                
             loss = loss_function(output, sample_batched['label'].to(device))
             loss.backward()
             optimizer.step()

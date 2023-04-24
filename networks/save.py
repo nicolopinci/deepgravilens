@@ -17,7 +17,12 @@ def save_performance(directory, network_name, prev_network, dataset_part, subset
     
     # Save classifications
     labels = dataset_part[:]['label'].data.numpy()
-    res = network(dataset_part[:]['lightcurve'], dataset_part[:]['image']).detach().numpy()
+    res = network(dataset_part[:]['lightcurve'], dataset_part[:]['image'])
+    
+    if len(res) == 2:
+        res = res[0]
+        
+    res = res.detach().numpy()
     columns = ["No Lens", "Lens", "LSNIa", "LSNCC", "Label"]
 
     output = np.hstack((res, labels.reshape(len(labels), 1)))
