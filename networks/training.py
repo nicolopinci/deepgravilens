@@ -6,11 +6,31 @@ import tqdm
 import math
 import sklearn.utils.class_weight as class_weight
 import sklearn
+import torch.nn.functional as F
 
 def train_network(network, train_dataloader, train_dataset, validation_dataloader, validation_dataset, test_dataloader, test_dataset, monitor=False, outfile_prefix="", gpu = True, lr=None, batch_size = None):
     ntw = gpu_train_network(network, train_dataloader, train_dataset, validation_dataloader, validation_dataset, test_dataloader, test_dataset,  monitor, outfile_prefix, lr, batch_size)
         
     return ntw
+
+
+def reciprocal_Loss(alpha_dict, p, c = 4):
+    total_loss = 0
+    
+    for key, alpha in alpha_dict.items():
+        S = torch.sum(alpha, dim=1, keepdim=True)
+        E = alpha - 1
+        label = F.one_hot(p, num_classes=c)
+        alp = E * (1 - label) + 1
+        S1 = torch.sum(alp, dim=1, keepdim=True)
+        reciprocal_Loss = torch.sum(label * (torch.digamma(S) - torch.digamma(alpha)), dim=1, keepdim=True)+1/torch.sum(((1-label)*(
+                torch.digamma(S1) -torch.digamma(alp))), dim=1, keepdim=True)
+        total_loss += reciprocal_Loss
+        
+    loss = torch.mean(total_loss)
+    return loss
+
+
 
 def compute_labels(network, dataloader, num_classes, device):
     output = torch.empty((0, num_classes)).to(device)                                                                                   
@@ -20,7 +40,7 @@ def compute_labels(network, dataloader, num_classes, device):
         partial_output = network(sample_batched['lightcurve'].to(device),
                                sample_batched['image'].to(device))
         
-        if len(partial_output) == 2:
+        if len(partial_output) == 2: # evidential learning
             partial_output = partial_output[0]
             
         output = torch.cat((output, partial_output))
@@ -68,10 +88,14 @@ def gpu_train_network(network, train_dataloader, train_dataset, validation_datal
             
             output = network(sample_batched['lightcurve'].to(device), sample_batched['image'].to(device))
             
+            loss = None
+            
             if len(output) == 2: # evidential
-                output = output[0]
+                output, alpha = output
+                loss = reciprocal_Loss(alpha, sample_batched['label'].to(device))
+            else: # non-evidential
+                loss = loss_function(output, sample_batched['label'].to(device))
                 
-            loss = loss_function(output, sample_batched['label'].to(device))
             loss.backward()
             optimizer.step()
 
