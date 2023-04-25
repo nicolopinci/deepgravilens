@@ -18,6 +18,8 @@ Both the data sets, containing simulated and real data, and the models described
 * Create a ```models``` folder in the main directory, and put the content of ```models.zip``` in there
 * Create a ```results``` folder in the main directory, and create the subfolders ```lsst_data```, ```des_deep_data```, ```real_des_deep```, ```full_data```, and ```high_cad_data``` in there
 
+The simulated data sets were obtained using deeplenstronomy, similarly to the ones presented [here](https://doi.org/10.5281/zenodo.5425726). The real data set was obtained using [NoirLab Astro Data Lab services](https://datalab.noirlab.edu/).
+
 
 ## Training
 
@@ -57,11 +59,11 @@ To evaluate the ensemble of LoNet, GloNet, and MuNet presented in the paper (wit
 python best_evaluation.py
 ```
 
-To evaluate the ensemble of LoNet, GloNet, and MuNet presented in the paper (with SVM) on the **real** data sets, run this command inside the ```networks``` folder:
+To evaluate the ensemble of LoNet, GloNet, and MuNet presented in the paper (with SVM) on the **real** data, run this command inside the ```networks``` folder:
 ```eval
 python real_data_inference.py <OBS_ID>
 ```
-where ```<OBS_ID>``` is the ID associated with the observation as presented in the paper.
+where ```<OBS_ID>``` is the ID associated with the observation as presented in the paper (691022126, 701263907, 699919273).
 
 ## Results
 
