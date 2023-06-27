@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7860294.svg)](https://doi.org/10.5281/zenodo.7860294)
 
-This repository is the official implementation of [DeepGraviLens: a Multi-Modal Architecture for Classifying Gravitational Lensing Data](https://arxiv.org/abs/2205.00701). 
+This repository is the official implementation of [DeepGraviLens: a Multi-Modal Architecture for Classifying Gravitational Lensing Data](https://doi.org/10.1007/s00521-023-08766-9). 
 
 ## Requirements
 
@@ -83,3 +83,23 @@ Our model achieves the following performance:
 | Improvement                   |          3.6          |          11.0         |          5.2          |           4.5          |
 
 Please refer to the paper for additional analyses.
+
+## Citation
+If you use this code, please cite the corresponding article as follows:
+
+> Pinciroli Vago, N.O., Fraternali, P. DeepGraviLens: a multi-modal architecture for classifying gravitational lensing data. Neural Comput & Applic (2023). https://doi.org/10.1007/s00521-023-08766-9
+
+or using the following BibTeX entry:
+
+```
+@article{PinciroliVago2023,
+  doi = {10.1007/s00521-023-08766-9},
+  url = {https://doi.org/10.1007/s00521-023-08766-9},
+  year = {2023},
+  month = jun,
+  publisher = {Springer Science and Business Media {LLC}},
+  author = {Nicol{\`{o}} Oreste Pinciroli Vago and Piero Fraternali},
+  title = {{DeepGraviLens}: a multi-modal architecture for classifying gravitational lensing data},
+  journal = {Neural Computing and Applications}
+}
+```
