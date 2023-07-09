@@ -36,7 +36,7 @@ where:
 
 To train the SVM ensemble for all the data sets (LoNet, GloNet and MuNet models are required):
 ```train
-python python run_svm_ensemble.py
+python run_svm_ensemble.py
 ```
 
 Use the following script to train all the networks sequentially:
